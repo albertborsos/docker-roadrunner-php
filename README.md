@@ -121,7 +121,8 @@ Shell `bin/bash` is required.
 # make PUSH=true VERSION=latest base74
 # make PUSH=true VERSION=latest base80
 # make PUSH=true VERSION=latest base81
-make PUSH=true VERSION=latest base82
+#make PUSH=true VERSION=latest base82
+make PUSH=true VERSION=latest base83
 ```
 
 ## Changelog
