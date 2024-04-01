@@ -7,7 +7,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions  \
 
 RUN apt-get update && apt-get install -y make libpcre3 wget
 
-ENV ROADRUNNER_VERSION=2023.3.9
+ENV ROADRUNNER_VERSION=2023.3.12
 RUN wget -O rr.tar.gz "https://github.com/roadrunner-server/roadrunner/releases/download/v${ROADRUNNER_VERSION}/roadrunner-${ROADRUNNER_VERSION}-linux-arm64.tar.gz" \
     && tar -xzf rr.tar.gz \
     && mv "roadrunner-${ROADRUNNER_VERSION}-linux-arm64/rr" /usr/local/bin/rr \
