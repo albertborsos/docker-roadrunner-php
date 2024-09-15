@@ -7,10 +7,12 @@ RUN chmod +x /usr/local/bin/install-php-extensions  \
 
 RUN apt-get update && apt-get install -y make libpcre3 wget
 
-ENV ROADRUNNER_VERSION=2024.2.0
-RUN wget -O rr.tar.gz "https://github.com/roadrunner-server/roadrunner/releases/download/v${ROADRUNNER_VERSION}/roadrunner-${ROADRUNNER_VERSION}-linux-amd64.tar.gz" \
+ARG ARCH
+ENV ARCH=$ARCH
+ENV ROADRUNNER_VERSION=2024.2.1
+RUN wget -O rr.tar.gz "https://github.com/roadrunner-server/roadrunner/releases/download/v${ROADRUNNER_VERSION}/roadrunner-${ROADRUNNER_VERSION}-linux-${ARCH}.tar.gz" \
     && tar -xzf rr.tar.gz \
-    && mv "roadrunner-${ROADRUNNER_VERSION}-linux-amd64/rr" /usr/local/bin/rr \
+    && mv "roadrunner-${ROADRUNNER_VERSION}-linux-${ARCH}/rr" /usr/local/bin/rr \
     && chmod +x /usr/local/bin/rr
 
 ENV PHP_MEMORY_LIMIT=-1
