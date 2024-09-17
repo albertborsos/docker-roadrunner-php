@@ -1,16 +1,18 @@
-FROM php:8.0-cli-alpine AS build
+FROM php:8.3-cli-bullseye AS build
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions  \
-    && install-php-extensions gd yaml grpc opcache pcntl opcache intl gd pdo_mysql pdo_pgsql sockets exif zip bcmath event xdebug
+    && install-php-extensions gd yaml grpc opcache pcntl opcache intl gd pdo_mysql pdo_pgsql sockets exif zip bcmath event
 
-RUN apk add --update --no-cache make pcre
+RUN apt-get update && apt-get install -y make libpcre3 wget
 
-ENV ROADRUNNER_VERSION=2024.2.0
-RUN wget -O rr.tar.gz "https://github.com/roadrunner-server/roadrunner/releases/download/v${ROADRUNNER_VERSION}/roadrunner-${ROADRUNNER_VERSION}-linux-amd64.tar.gz" \
+ARG ARCH
+ENV ARCH=$ARCH
+ENV ROADRUNNER_VERSION=2024.2.1
+RUN wget -O rr.tar.gz "https://github.com/roadrunner-server/roadrunner/releases/download/v${ROADRUNNER_VERSION}/roadrunner-${ROADRUNNER_VERSION}-linux-${ARCH}.tar.gz" \
     && tar -xzf rr.tar.gz \
-    && mv "roadrunner-${ROADRUNNER_VERSION}-linux-amd64/rr" /usr/local/bin/rr \
+    && mv "roadrunner-${ROADRUNNER_VERSION}-linux-${ARCH}/rr" /usr/local/bin/rr \
     && chmod +x /usr/local/bin/rr
 
 ENV PHP_MEMORY_LIMIT=-1
@@ -40,8 +42,8 @@ ENV PHP_OPCACHE_REVALIDATE_FREQ=0
 ENV PHP_OPCACHE_ENABLE_FILE_OVERRIDE=1
 ENV PHP_OPCACHE_FILE_CACHE_ONLY=1
 
-COPY --from=roquie/smalte:latest-alpine /app/smalte /usr/local/bin/smalte
-COPY base/8.0/php.ini.tmpl /usr/local/etc/php/php.ini.tmpl
+COPY --from=roquie/smalte:latest /app/smalte /usr/local/bin/smalte
+COPY base/8.3/php.ini.tmpl /usr/local/etc/php/php.ini.tmpl
 COPY configure.sh /
 
 EXPOSE 8080
