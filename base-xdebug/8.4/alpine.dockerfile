@@ -1,4 +1,4 @@
-FROM php:8.2-cli-alpine AS build
+FROM php:8.4-cli-alpine AS build
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -41,7 +41,7 @@ ENV PHP_OPCACHE_ENABLE_FILE_OVERRIDE=1
 ENV PHP_OPCACHE_FILE_CACHE_ONLY=1
 
 COPY --from=roquie/smalte:latest-alpine /app/smalte /usr/local/bin/smalte
-COPY base/8.2/php.ini.tmpl /usr/local/etc/php/php.ini.tmpl
+COPY base/8.4/php.ini.tmpl /usr/local/etc/php/php.ini.tmpl
 COPY configure.sh /
 
 EXPOSE 8080
